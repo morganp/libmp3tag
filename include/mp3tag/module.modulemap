@@ -1,0 +1,6 @@
+module mp3tag {
+    header "mp3tag.h"
+    header "mp3tag_types.h"
+    header "mp3tag_error.h"
+    export *
+}
