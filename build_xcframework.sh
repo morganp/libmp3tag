@@ -33,7 +33,7 @@ SOURCES=(
     src/util/string_util.c
 )
 
-CFLAGS="-std=c11 -Wall -Wextra -Wpedantic -Wno-unused-parameter -O2 -I${SCRIPT_DIR}/include"
+CFLAGS=(-std=c11 -Wall -Wextra -Wpedantic -Wno-unused-parameter -O2 "-I${SCRIPT_DIR}/include")
 
 # --- Helper: build a static library for one platform/arch ---
 build_platform() {
@@ -49,7 +49,7 @@ build_platform() {
     local objects=()
     for src in "${SOURCES[@]}"; do
         local obj="${out_dir}/$(basename "${src}" .c).o"
-        xcrun --sdk "${sdk}" clang ${CFLAGS} ${min_version_flag} \
+        xcrun --sdk "${sdk}" clang "${CFLAGS[@]}" "${min_version_flag}" \
             -arch "${arch}" -c "${SCRIPT_DIR}/${src}" -o "${obj}"
         objects+=("${obj}")
     done
