@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(mp3tag VERSION 1.0.0 LANGUAGES C)
+project(mp3tag VERSION 1.1.0 LANGUAGES C)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -10,6 +10,7 @@ set(MP3TAG_SOURCES
     src/id3v2/id3v2_reader.c
     src/id3v2/id3v2_writer.c
     src/id3v1/id3v1.c
+    src/container/container.c
     src/io/file_io.c
     src/util/buffer.c
     src/util/string_util.c

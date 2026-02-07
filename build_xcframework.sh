@@ -27,6 +27,7 @@ SOURCES=(
     src/id3v2/id3v2_reader.c
     src/id3v2/id3v2_writer.c
     src/id3v1/id3v1.c
+    src/container/container.c
     src/io/file_io.c
     src/util/buffer.c
     src/util/string_util.c

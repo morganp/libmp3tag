@@ -1,17 +1,19 @@
 # libmp3tag
 
-A pure C library for reading and writing MP3 file metadata (ID3v2/ID3v1) tags without loading entire files into memory.
+A pure C library for reading and writing audio file metadata (ID3v2/ID3v1) tags without loading entire files into memory. Supports **MP3**, **AAC**, **WAV**, and **AIFF** files.
 
 API-compatible with [libmkvtag](https://github.com/morganp/libmkvtag) — swap `mkvtag_` for `mp3tag_` and the same patterns apply.
 
 ## Features
 
+- **Multi-format**: MP3, AAC (ADTS), WAV (RIFF), and AIFF containers — same API for all
 - **Memory-efficient**: buffered I/O with 8KB read buffer; never loads the full audio into memory
 - **In-place editing**: when the new tags fit within the existing ID3v2 space (including padding), the file is updated in place without rewriting
 - **Safe rewrite**: when more space is needed, writes to a temp file then performs an atomic rename; adds 4KB padding for future in-place edits
+- **Container-aware**: WAV and AIFF files store ID3v2 tags in their native chunk format (`id3 ` / `ID3 ` chunks), with correct RIFF/FORM size updates
 - **ID3v2.4 output**: writes ID3v2.4 with UTF-8 encoding for maximum compatibility
 - **ID3v2.3 + v2.4 input**: reads both versions, handling all text encodings (ISO-8859-1, UTF-16 LE/BE, UTF-8)
-- **ID3v1 fallback**: reads ID3v1/v1.1 tags when no ID3v2 tag is present
+- **ID3v1 fallback**: reads ID3v1/v1.1 tags when no ID3v2 tag is present (MP3/AAC only)
 - **No dependencies**: only requires POSIX + C11 stdlib
 - **Clean builds**: compiles with `-Wall -Wextra -Wpedantic`
 
@@ -170,6 +172,17 @@ chmod +x build_xcframework.sh
 Unknown tag names with 4 uppercase characters are used as raw frame IDs.
 Other unknown names are stored as TXXX (user-defined text) frames.
 
+## Supported Formats
+
+| Format | Extension | Tag location | Notes |
+|--------|-----------|-------------|-------|
+| MP3    | .mp3      | Prepended ID3v2 at start of file | ID3v1 fallback at EOF |
+| AAC    | .aac      | Prepended ID3v2 at start of file | ADTS streams |
+| WAV    | .wav      | `id3 ` chunk in RIFF container | RIFF/WAVE size auto-updated |
+| AIFF   | .aif/.aiff | `ID3 ` chunk in FORM container | FORM/AIFF size auto-updated |
+
+The API is identical for all formats — the library auto-detects the container type on open.
+
 ## Project Structure
 
 ```
@@ -179,19 +192,23 @@ libmp3tag/
 │   ├── mp3tag_types.h      # Type definitions
 │   ├── mp3tag_error.h      # Error codes
 │   └── module.modulemap    # Swift/Clang module map
-└── src/
-    ├── mp3tag.c            # Main API implementation
-    ├── id3v2/              # ID3v2 format layer
-    │   ├── id3v2_defs.h    # Constants, frame ID mapping
-    │   ├── id3v2_reader.c  # ID3v2 parsing
-    │   └── id3v2_writer.c  # ID3v2 serialization
-    ├── id3v1/              # ID3v1 format layer
-    │   └── id3v1.c         # ID3v1 parsing (read-only)
-    ├── io/                 # I/O abstraction
-    │   └── file_io.c       # Buffered POSIX file I/O
-    └── util/               # Utilities
-        ├── buffer.c        # Dynamic byte buffer
-        └── string_util.c   # String helpers
+├── src/
+│   ├── mp3tag.c            # Main API implementation
+│   ├── id3v2/              # ID3v2 format layer
+│   │   ├── id3v2_defs.h    # Constants, frame ID mapping
+│   │   ├── id3v2_reader.c  # ID3v2 parsing
+│   │   └── id3v2_writer.c  # ID3v2 serialization
+│   ├── id3v1/              # ID3v1 format layer
+│   │   └── id3v1.c         # ID3v1 parsing (read-only)
+│   ├── container/          # Container format layer
+│   │   └── container.c     # AIFF/WAV chunk detection & rewriting
+│   ├── io/                 # I/O abstraction
+│   │   └── file_io.c       # Buffered POSIX file I/O
+│   └── util/               # Utilities
+│       ├── buffer.c        # Dynamic byte buffer
+│       └── string_util.c   # String helpers
+└── tests/
+    └── test_mp3tag.c       # Multi-format test suite (96 tests)
 ```
 
 ## License

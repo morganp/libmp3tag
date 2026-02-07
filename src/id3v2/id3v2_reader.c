@@ -13,13 +13,13 @@
 /*  Header parsing                                                     */
 /* ------------------------------------------------------------------ */
 
-int id3v2_read_header(file_handle_t *fh, id3v2_header_t *hdr)
+int id3v2_read_header(file_handle_t *fh, int64_t offset, id3v2_header_t *hdr)
 {
     if (!fh || !hdr)
         return MP3TAG_ERR_INVALID_ARG;
 
     uint8_t buf[ID3V2_HEADER_SIZE];
-    if (file_seek(fh, 0) != 0)
+    if (file_seek(fh, offset) != 0)
         return MP3TAG_ERR_SEEK_FAILED;
     if (file_read(fh, buf, ID3V2_HEADER_SIZE) != 0)
         return MP3TAG_ERR_NOT_MP3;
@@ -216,8 +216,8 @@ static size_t terminator_size(uint8_t encoding)
 /*  Frame parsing                                                      */
 /* ------------------------------------------------------------------ */
 
-int id3v2_read_frames(file_handle_t *fh, const id3v2_header_t *hdr,
-                      id3v2_frame_t **frames)
+int id3v2_read_frames(file_handle_t *fh, int64_t base_offset,
+                      const id3v2_header_t *hdr, id3v2_frame_t **frames)
 {
     if (!fh || !hdr || !frames)
         return MP3TAG_ERR_INVALID_ARG;
@@ -225,7 +225,7 @@ int id3v2_read_frames(file_handle_t *fh, const id3v2_header_t *hdr,
     *frames = NULL;
     id3v2_frame_t *tail = NULL;
 
-    int64_t tag_start = ID3V2_HEADER_SIZE;
+    int64_t tag_start = base_offset + ID3V2_HEADER_SIZE;
     int64_t tag_end   = tag_start + (int64_t)hdr->tag_size;
 
     /* Skip extended header if present */

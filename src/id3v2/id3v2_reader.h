@@ -32,18 +32,18 @@ typedef struct id3v2_frame {
 } id3v2_frame_t;
 
 /*
- * Read and validate the ID3v2 header at the current file position.
+ * Read and validate the ID3v2 header at the given file offset.
  * Returns MP3TAG_OK on success, MP3TAG_ERR_NOT_MP3 if no ID3v2 header.
  */
-int id3v2_read_header(file_handle_t *fh, id3v2_header_t *hdr);
+int id3v2_read_header(file_handle_t *fh, int64_t offset, id3v2_header_t *hdr);
 
 /*
  * Read all frames from an ID3v2 tag.
- * The file must be positioned just after the 10-byte header.
+ * `base_offset` is the file offset where the ID3v2 header starts.
  * Returns a linked list of frames; caller must free with id3v2_free_frames().
  */
-int id3v2_read_frames(file_handle_t *fh, const id3v2_header_t *hdr,
-                      id3v2_frame_t **frames);
+int id3v2_read_frames(file_handle_t *fh, int64_t base_offset,
+                      const id3v2_header_t *hdr, id3v2_frame_t **frames);
 
 /*
  * Convert parsed ID3v2 frames into an mp3tag_collection_t.
