@@ -28,12 +28,10 @@ SOURCES=(
     src/id3v2/id3v2_writer.c
     src/id3v1/id3v1.c
     src/container/container.c
-    src/io/file_io.c
-    src/util/buffer.c
-    src/util/string_util.c
 )
 
-CFLAGS=(-std=c11 -Wall -Wextra -Wpedantic -Wno-unused-parameter -O2 "-I${SCRIPT_DIR}/include")
+TAG_COMMON_DIR="${SCRIPT_DIR}/deps/libtag_common"
+CFLAGS=(-std=c11 -Wall -Wextra -Wpedantic -Wno-unused-parameter -O2 "-I${SCRIPT_DIR}/include" "-I${TAG_COMMON_DIR}/include")
 
 # --- Helper: build a static library for one platform/arch ---
 build_platform() {

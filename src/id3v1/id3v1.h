@@ -4,7 +4,7 @@
 #ifndef ID3V1_H
 #define ID3V1_H
 
-#include "../io/file_io.h"
+#include <tag_common/file_io.h>
 #include "../../include/mp3tag/mp3tag_types.h"
 
 #ifdef __cplusplus

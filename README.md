@@ -69,29 +69,36 @@ mp3tag_close(ctx);
 mp3tag_destroy(ctx);
 ```
 
+## Dependencies
+
+- [libtag_common](https://github.com/morganp/libtag_common) — shared I/O, buffer, and string utilities (included as git submodule)
+
 ## Building
 
-### CMake
+Clone with submodules:
 
 ```bash
-mkdir build && cd build
-cmake ..
-make
+git clone --recursive https://github.com/morganp/libmp3tag.git
 ```
 
-### Bare Xcode toolchain (no CMake)
+If already cloned:
 
 ```bash
-xcrun clang -std=c11 -O2 -Wall -Iinclude -c src/*.c src/**/*.c
-ar rcs libmp3tag.a *.o
+git submodule update --init
 ```
 
 ### XCFramework (macOS + iOS)
 
 ```bash
-chmod +x build_xcframework.sh
 ./build_xcframework.sh
 # Output: build/xcframework/mp3tag.xcframework
+```
+
+### Manual build
+
+```bash
+xcrun clang -std=c11 -O2 -Wall -Iinclude -Ideps/libtag_common/include -c src/*.c src/**/*.c
+ar rcs libmp3tag.a *.o
 ```
 
 ## Supported platforms
@@ -192,6 +199,8 @@ libmp3tag/
 │   ├── mp3tag_types.h      # Type definitions
 │   ├── mp3tag_error.h      # Error codes
 │   └── module.modulemap    # Swift/Clang module map
+├── deps/
+│   └── libtag_common/      # Shared I/O, buffer & string utilities (submodule)
 ├── src/
 │   ├── mp3tag.c            # Main API implementation
 │   ├── id3v2/              # ID3v2 format layer
@@ -200,13 +209,8 @@ libmp3tag/
 │   │   └── id3v2_writer.c  # ID3v2 serialization
 │   ├── id3v1/              # ID3v1 format layer
 │   │   └── id3v1.c         # ID3v1 parsing (read-only)
-│   ├── container/          # Container format layer
-│   │   └── container.c     # AIFF/WAV chunk detection & rewriting
-│   ├── io/                 # I/O abstraction
-│   │   └── file_io.c       # Buffered POSIX file I/O
-│   └── util/               # Utilities
-│       ├── buffer.c        # Dynamic byte buffer
-│       └── string_util.c   # String helpers
+│   └── container/          # Container format layer
+│       └── container.c     # AIFF/WAV chunk detection & rewriting
 └── tests/
     └── test_mp3tag.c       # Multi-format test suite (96 tests)
 ```

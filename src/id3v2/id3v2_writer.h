@@ -4,7 +4,7 @@
 #ifndef ID3V2_WRITER_H
 #define ID3V2_WRITER_H
 
-#include "../util/buffer.h"
+#include <tag_common/buffer.h>
 #include "../../include/mp3tag/mp3tag_types.h"
 #include "id3v2_reader.h"
 #include <stdint.h>

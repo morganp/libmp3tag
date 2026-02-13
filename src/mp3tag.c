@@ -7,9 +7,9 @@
 #include "id3v2/id3v2_defs.h"
 #include "id3v1/id3v1.h"
 #include "container/container.h"
-#include "io/file_io.h"
-#include "util/buffer.h"
-#include "util/string_util.h"
+#include <tag_common/file_io.h>
+#include <tag_common/buffer.h>
+#include <tag_common/string_util.h>
 
 #include <stdlib.h>
 #include <string.h>

@@ -1,0 +1,3 @@
+[submodule "deps/libtag_common"]
+	path = deps/libtag_common
+	url = https://github.com/morganp/libtag_common.git

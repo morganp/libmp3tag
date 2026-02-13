@@ -3,7 +3,7 @@
 
 #include "id3v1.h"
 #include "../../include/mp3tag/mp3tag_error.h"
-#include "../util/string_util.h"
+#include <tag_common/string_util.h>
 
 #include <stdlib.h>
 #include <string.h>
