@@ -28,6 +28,9 @@ SOURCES=(
     src/id3v2/id3v2_writer.c
     src/id3v1/id3v1.c
     src/container/container.c
+    deps/libtag_common/src/file_io.c
+    deps/libtag_common/src/buffer.c
+    deps/libtag_common/src/string_util.c
 )
 
 TAG_COMMON_DIR="${SCRIPT_DIR}/deps/libtag_common"

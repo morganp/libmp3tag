@@ -11,9 +11,9 @@ set(MP3TAG_SOURCES
     src/id3v2/id3v2_writer.c
     src/id3v1/id3v1.c
     src/container/container.c
-    src/io/file_io.c
-    src/util/buffer.c
-    src/util/string_util.c
+    deps/libtag_common/src/file_io.c
+    deps/libtag_common/src/buffer.c
+    deps/libtag_common/src/string_util.c
 )
 
 add_library(mp3tag STATIC ${MP3TAG_SOURCES})
@@ -24,6 +24,7 @@ target_include_directories(mp3tag
         $<INSTALL_INTERFACE:include>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/deps/libtag_common/include
 )
 
 # Strict warnings
