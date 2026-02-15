@@ -14,7 +14,8 @@ extern "C" {
 typedef enum {
     CONTAINER_NONE = 0,   /* Raw stream: MP3, AAC, etc. (ID3v2 prepended) */
     CONTAINER_AIFF,       /* IFF/AIFF: ID3v2 in "ID3 " chunk */
-    CONTAINER_WAV         /* RIFF/WAVE: ID3v2 in "id3 " chunk */
+    CONTAINER_WAV,        /* RIFF/WAVE: ID3v2 in "id3 " chunk */
+    CONTAINER_AVI         /* RIFF/AVI:  ID3v2 in "id3 " chunk */
 } container_type_t;
 
 typedef struct {

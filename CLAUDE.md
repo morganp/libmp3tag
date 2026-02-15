@@ -39,6 +39,7 @@ Pure C11 static library for reading/writing ID3v2/ID3v1 tags in MP3, AAC, WAV, a
 | AAC | .aac | Prepended ID3v2 (ADTS streams) |
 | WAV | .wav | `id3 ` chunk in RIFF container |
 | AIFF | .aif/.aiff | `ID3 ` chunk in FORM container |
+| AVI | .avi | `id3 ` chunk in RIFF container |
 
 ### Write Strategy
 

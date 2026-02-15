@@ -184,7 +184,7 @@ static int probe_file(mp3tag_context_t *ctx)
         int v1 = id3v1_detect(ctx->fh);
         ctx->has_id3v1 = (v1 == 1);
     } else {
-        /* Container (AIFF/WAV) — ID3v2 is inside a chunk */
+        /* Container (AIFF/WAV/AVI) — ID3v2 is inside a chunk */
         ctx->has_id3v1 = 0;
 
         if (ctx->container.has_id3_chunk) {

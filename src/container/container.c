@@ -127,6 +127,16 @@ int container_detect(file_handle_t *fh, container_info_t *info)
         return MP3TAG_OK;
     }
 
+    /* AVI */
+    if (memcmp(magic, "RIFF", 4) == 0 &&
+        memcmp(magic + 8, "AVI ", 4) == 0)
+    {
+        info->type = CONTAINER_AVI;
+        info->form_total_size = read_le32(magic + 4);
+        scan_chunks(fh, info);
+        return MP3TAG_OK;
+    }
+
     info->type = CONTAINER_NONE;
     return MP3TAG_OK;
 }
